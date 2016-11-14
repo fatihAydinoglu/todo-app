@@ -1,0 +1,23 @@
+{
+  "name": "rest-api",
+  "version": "1.0.0",
+  "description": "Todo App REST Api",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "winston": "^2.3.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.1.2",
+    "mongoose": "^4.6.6",
+    "nodemon": "^1.11.0",
+    "supertest": "^2.0.1"
+  }
+}

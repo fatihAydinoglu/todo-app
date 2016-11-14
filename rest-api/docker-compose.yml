@@ -1,0 +1,8 @@
+version: '2'
+services:
+  mongodb:
+    image: mongo:3.2.8
+    ports:
+      - "27017:27017"
+    volumes:
+      - /Users/fatihaydinoglu/dev/data/todoapp:/data/db
