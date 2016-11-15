@@ -1,33 +1,32 @@
-// todo
-// - parameter validation
-// - send error code on failures
-// - http status codes
-
-
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const config = require('../config');
 
 const logger = require('../logger');
 const model = require('./model');
 
 const todo = new express();
 
+//Connect to mongodb
+mongoose.connect(config.MONGO_DB_URL, (err) => {
+    if (err) logger.error(err);
+});
+
 //CORS middleware
-var allowCrossDomain = function(req, res, next) {
+todo.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
-
     next();
-}
+});
 
-todo.use(allowCrossDomain);
 
 // for parsing application/json
-todo.use(bodyParser.json()); 
+todo.use(bodyParser.json());
 
 // for parsing application/x-www-form-urlencoded
-todo.use(bodyParser.urlencoded({ extended: true })); 
+todo.use(bodyParser.urlencoded({ extended: true }));
 
 // Create a new todo
 todo.post('/', (req, res) => {
@@ -37,7 +36,7 @@ todo.post('/', (req, res) => {
         status: req.body.status
     });
 
-    newTodo.save((err, result) => {  
+    newTodo.save((err, result) => {
         if (err) throw err;
         res.json(newTodo);
     });
@@ -46,39 +45,38 @@ todo.post('/', (req, res) => {
 
 // Update todo
 todo.put('/:id', (req, res) => {
-    model.findByIdAndUpdate(req.params.id, { status: req.body.status }, {new: true},
-        function(err, result) {
-          if (err) throw err;
-          if(!result) result = {};
-          console.log('result', result);
-          res.json(result);
+    model.findByIdAndUpdate(req.params.id, { status: req.body.status }, { new: true },
+        (err, result) => {
+            if (err) throw err;
+            if (!result) result = {};
+            res.json(result);
         }
     );
 })
 
 // Get all todos
 todo.get('/', (req, res) => {
-    model.find({}, 'title status' ,function(err, result) {   
-      if (err) throw err;
-      res.json(result); 
-    }); 
+    model.find({}, 'title status', (err, result) => {
+        if (err) throw err;
+        res.json(result);
+    });
 })
 
 // Get a todo
 todo.get('/:id', (req, res) => {
-    model.findOne({_id: req.params.id}, 'title status' ,function(err, result) {   
-      if (err) throw err;
-      if(!result) result = {};
-      res.json(result); 
-    }); 
+    model.findOne({ _id: req.params.id }, 'title status', (err, result) => {
+        if (err) throw err;
+        if (!result) result = {};
+        res.json(result);
+    });
 })
 
 // Delete a todo
 todo.delete('/:id', (req, res) => {
-    model.findByIdAndRemove(req.params.id, function(err, result) {
-      if (err) throw err;
-      if(!result) result = {};
-      res.json(result); 
+    model.findByIdAndRemove(req.params.id, (err, result) => {
+        if (err) throw err;
+        if (!result) result = {};
+        res.json(result);
     });
 })
 

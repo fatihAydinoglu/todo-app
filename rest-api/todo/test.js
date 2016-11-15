@@ -2,7 +2,7 @@ var supertest = require("supertest");
 var todo = require('./');
 
 describe('Todo Api', () => {
-    
+
     var testTodoId;
 
     // Post - /
@@ -11,25 +11,27 @@ describe('Todo Api', () => {
             supertest(todo)
                 .post('/')
                 .type('json')
-                .send('{"description":"read a book."}')
+                .send('{"title":"read a book.", "status":"TODO"}')
                 .expect(200)
                 .end((err, res) => {
+                    testTodoId = res.body._id;
                     done(err);
                 });
         });
     });
 
+
     // Put - /
     describe('Update request', () => {
         it('should update todo', (done) => {
-            if(!testTodoId) {
+            if (!testTodoId) {
                 throw new Error('There is no todo to update');
-            }    
+            }
 
             supertest(todo)
-                .put('/')
+                .put('/' + testTodoId)
                 .type('json')
-                .send(`{"id":${testTodoId}, "description":"read two books."}`)
+                .send(`{"status":"DONE"}`)
                 .expect(200)
                 .end((err, res) => {
                     done(err);
@@ -37,6 +39,7 @@ describe('Todo Api', () => {
 
         })
     });
+
 
 
     // Get - /
@@ -48,14 +51,14 @@ describe('Todo Api', () => {
                 .end((err, res) => {
                     done(err);
                 });
-        })    
+        })
     });
 
     // Get - /id
     describe('Get one request', () => {
         it('should return todo', (done) => {
 
-            if(!testTodoId) throw new Error('There is no todo to get');
+            if (!testTodoId) throw new Error('There is no todo to get');
 
             supertest(todo)
                 .get('/' + testTodoId)
@@ -63,14 +66,14 @@ describe('Todo Api', () => {
                 .end((err, res) => {
                     done(err);
                 })
-        })        
+        })
     });
 
     // Delete - /id
     describe('Delete request', () => {
         it('should delete todo', (done) => {
-            
-            if(!testTodoId) throw new Error('There is no todo to delete');
+
+            if (!testTodoId) throw new Error('There is no todo to delete');
 
             supertest(todo)
                 .delete('/' + testTodoId)
@@ -81,6 +84,6 @@ describe('Todo Api', () => {
 
         });
     });
-    
-});    
+
+});
 

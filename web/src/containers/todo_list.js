@@ -14,9 +14,9 @@ class TodoList extends Component {
             <li className={`list-group-item clearfix ${todo.status === "DONE" ? "list-group-item-success" : ""}`} key={todo._id}>
                 <span>{todo.title}</span>
                 <div className="pull-right" role="group">
-                    <button className="btn btn-xs btn-danger img-circle" onClick={ () => this.props.removeTodo(todo._id)}>X</button>
+                    <button className="btn btn-xs btn-danger img-circle" onClick={() => this.props.removeTodo(todo._id)}>X</button>
                     <span> </span>
-                    <button className="btn btn-xs btn-success img-circle" onClick={ () => this.props.updateTodo(todo._id, todo.status)}>✓</button>
+                    <button className="btn btn-xs btn-success img-circle" onClick={() => this.props.updateTodo(todo._id, todo.status)}>✓</button>
                 </div>
             </li>
         );
@@ -27,21 +27,23 @@ class TodoList extends Component {
     }
 
     render() {
-        return(
-            <ul className="list-group">    
-            {this.props.todos.map(this.renderTodoItem.bind(this))}
-            </ul>
-        ); 
+        const { payload } = this.props.todos;
+        return (
+            <div>
+                <ul className="list-group">
+                    {payload.map(this.renderTodoItem.bind(this))}
+                </ul>
+            </div>
+        );
     }
-
 }
 
 function mapStateToProps({ todos }) {
-  return { todos };
+    return { todos };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchTodos, removeTodo, updateTodo }, dispatch);
+    return bindActionCreators({ fetchTodos, removeTodo, updateTodo }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

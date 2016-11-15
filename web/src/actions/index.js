@@ -1,46 +1,76 @@
 import axios from 'axios';
 
-export const ADD_TODO = 'ADD_TODO';
-export const REMOVE_TODO = 'REMOVE_TODO';
-export const UPDATE_TODO = 'UPDATE_TODO';
-export const FETCH_TODOS = 'FETCH_TODOS';
+import { fetchTodosRequest, fetchTodosSuccess, fetchTodosFailure } from './fetchTodos'
+import { addTodoRequest, addTodoSuccess, addTodoFailure } from './addTodo'
+import { updateTodoRequest, updateTodoSuccess, updateTodoFailure } from './updateTodo'
+import { removeTodoRequest, removeTodoSuccess, removeTodoFailure } from './removeTodo'
 
-const apiUrl = `http://localhost:3000/api/todo/`;
+//API URL
+export const apiUrl = `http://localhost:3000/api/todo/`;
 
-export function addTodo(title) {
-  
-  const request = axios.post(apiUrl, {"title": title, "status": "TODO"});
-
-  return {
-    type: ADD_TODO,
-    payload: request
-  };
-}
-
+//Fetch Todos
 export function fetchTodos() {
-  const request = axios.get(apiUrl);
+  return dispatch => {
+    //for loading message
+    dispatch(fetchTodosRequest());
 
-  return {
-    type: FETCH_TODOS,
-    payload: request
-  };
+    //api request
+    return axios.get(apiUrl).then(response => {
+      dispatch(fetchTodosSuccess(response.data));
+    }).catch((err) => {
+      dispatch(fetchTodosFailure(err.message));
+    });
+  }
 }
 
+//Add a todo
+export function addTodo(title) {
+  return dispatch => {
+    //for loading message
+    dispatch(addTodoRequest());
+
+    //api request
+    return axios.post(apiUrl, { "title": title, "status": "TODO" })
+      .then(response => {
+        dispatch(addTodoSuccess(response.data));
+      }).catch((err) => {
+        dispatch(addTodoFailure(err.message));
+      });
+  }
+}
+
+//Remove a todo
 export function removeTodo(id) {
-  const request = axios.delete(apiUrl + id);
+  return dispatch => {
+    //for loading message
+    dispatch(removeTodoRequest());
 
-  return {
-    type: REMOVE_TODO,
-    payload: request 
+    //api request
+    return axios.delete(apiUrl + id)
+      .then(response => {
+        dispatch(removeTodoSuccess(response.data));
+      }).catch((err) => {
+        dispatch(removeTodoFailure(err.message));
+      });
   }
 }
 
+//Update a todo
 export function updateTodo(id, status) {
-  let newStatus = status === "TODO" ? "DONE" : "TODO";
-  const request = axios.put(apiUrl + id, { "status": newStatus });
+  return dispatch => {
+    //for loading message
+    dispatch(updateTodoRequest());
 
-  return {
-    type: UPDATE_TODO,
-    payload: request
+    //api request
+    const newStatus = status === "TODO" ? "DONE" : "TODO";
+
+    return axios.put(apiUrl + id, { "status": newStatus })
+      .then(response => {
+        dispatch(updateTodoSuccess(response.data));
+      }).catch((err) => {
+        dispatch(updateTodoFailure(err.message));
+      });
   }
 }
+
+

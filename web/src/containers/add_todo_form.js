@@ -11,39 +11,43 @@ class AddTodoForm extends Component {
         this.onInputChange = this.onInputChange.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
 
-        this.state = { addTodoText: ''};
+        this.state = { addTodoText: '', validated: true };
     }
 
     onInputChange(event) {
-        this.setState({ addTodoText: event.target.value});
+        this.setState({ addTodoText: event.target.value, validated: true });
     }
 
     onFormSubmit(event) {
         event.preventDefault();
 
+        if (!this.state.addTodoText) {
+            this.setState({ validated: false });
+            return;
+        }
+
         this.props.addTodo(this.state.addTodoText);
-        this.setState({ addTodoText: '' });
+        this.setState({ addTodoText: '', validated: true });
     }
 
     render() {
         return (
-            <form className='input-group' onSubmit={this.onFormSubmit}>
-                <input 
-                    className="form-control" 
-                    placeholder="Write your to do here..."
-                    value={this.state.addTodoText}
-                    onChange={this.onInputChange}
-                />
-                <span className="input-group-btn">
-                    <button type="submit" className="btn btn-primary">Add</button>
-                </span>
+            <form className="form-horizontal" onSubmit={this.onFormSubmit}>
+                <div className={`form-group ${this.state.validated ? "" : "has-error"}`}>
+                    <input
+                        className="form-control"
+                        placeholder="Write your to do here and press Enter."
+                        value={this.state.addTodoText}
+                        onChange={this.onInputChange}
+                        />
+                </div>
             </form>
         );
     }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addTodo }, dispatch);
+    return bindActionCreators({ addTodo }, dispatch);
 }
 
 export default connect(null, mapDispatchToProps)(AddTodoForm);

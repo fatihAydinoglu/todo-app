@@ -5,4 +5,4 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - /Users/fatihaydinoglu/dev/data/todoapp:/data/db
+      - $HOME/dev/data/todoapp:/data/db
