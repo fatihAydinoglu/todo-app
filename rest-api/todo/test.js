@@ -1,5 +1,6 @@
 var supertest = require("supertest");
-var todo = require('./');
+const express = require('express');
+var app = require('../app');
 
 describe('Todo Api', () => {
 
@@ -8,8 +9,8 @@ describe('Todo Api', () => {
     // Post - /
     describe('Create request', () => {
         it('should create todo', (done) => {
-            supertest(todo)
-                .post('/')
+            supertest(app)
+                .post('/api/todo/')
                 .type('json')
                 .send('{"title":"read a book.", "status":"TODO"}')
                 .expect(200)
@@ -28,8 +29,8 @@ describe('Todo Api', () => {
                 throw new Error('There is no todo to update');
             }
 
-            supertest(todo)
-                .put('/' + testTodoId)
+            supertest(app)
+                .put('/api/todo/' + testTodoId)
                 .type('json')
                 .send(`{"status":"DONE"}`)
                 .expect(200)
@@ -45,8 +46,8 @@ describe('Todo Api', () => {
     // Get - /
     describe('List all request', () => {
         it('should return all todos', (done) => {
-            supertest(todo)
-                .get('/')
+            supertest(app)
+                .get('/api/todo/')
                 .expect(200)
                 .end((err, res) => {
                     done(err);
@@ -60,8 +61,8 @@ describe('Todo Api', () => {
 
             if (!testTodoId) throw new Error('There is no todo to get');
 
-            supertest(todo)
-                .get('/' + testTodoId)
+            supertest(app)
+                .get('/api/todo/' + testTodoId)
                 .expect(200)
                 .end((err, res) => {
                     done(err);
@@ -75,8 +76,8 @@ describe('Todo Api', () => {
 
             if (!testTodoId) throw new Error('There is no todo to delete');
 
-            supertest(todo)
-                .delete('/' + testTodoId)
+            supertest(app)
+                .delete('/api/todo/' + testTodoId)
                 .expect(200)
                 .end((err, res) => {
                     done(err);

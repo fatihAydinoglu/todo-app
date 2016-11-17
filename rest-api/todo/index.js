@@ -1,32 +1,8 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const config = require('../config');
-
-const logger = require('../logger');
+const logger = require('../utils/logger');
 const model = require('./model');
 
-const todo = new express();
-
-//Connect to mongodb
-mongoose.connect(config.MONGO_DB_URL, (err) => {
-    if (err) logger.error(err);
-});
-
-//CORS middleware
-todo.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-});
-
-
-// for parsing application/json
-todo.use(bodyParser.json());
-
-// for parsing application/x-www-form-urlencoded
-todo.use(bodyParser.urlencoded({ extended: true }));
+const todo = new express.Router();
 
 // Create a new todo
 todo.post('/', (req, res) => {
