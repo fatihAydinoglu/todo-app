@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const config = require('./config');
-const todo = require('./todo');
+const todo = require('./todo/routes');
 const logger = require('./utils/logger');
 const errorHandler = require('./utils/error-handler');
 
