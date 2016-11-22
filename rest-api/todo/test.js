@@ -2,7 +2,7 @@ var supertest = require("supertest");
 const express = require('express');
 var app = require('../app');
 
-describe('Todo Api', () => {
+describe('Todo Api Requests', () => {
 
     var testTodoId;
 

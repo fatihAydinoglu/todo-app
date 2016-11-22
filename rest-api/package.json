@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon",
-    "test": "mocha --recursive ./**/test.js"
+    "test": "mocha --recursive ./**/*test.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +15,7 @@
     "winston": "^2.3.0"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
     "mocha": "^3.1.2",
     "mongoose": "^4.6.6",
     "nodemon": "^1.11.0",

@@ -38,4 +38,12 @@ app.use(errorHandler.logErrors);
 app.use(errorHandler.clientErrorHandler);
 app.use(errorHandler.notFoundErrorHandler);
 
+// If the Node process ends, close the Mongoose connection 
+process.on('SIGINT', () => {  
+  mongoose.connection.close( () => { 
+    console.log('Mongoose default connection disconnected through app termination'); 
+    process.exit(0); 
+  }); 
+}); 
+
 module.exports = app;

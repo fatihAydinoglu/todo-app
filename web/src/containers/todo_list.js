@@ -30,7 +30,7 @@ class TodoList extends Component {
         const { payload } = this.props.todos;
         return (
             <div>
-                <ul className="list-group">
+                <ul className="todolist list-group">
                     {payload.map(this.renderTodoItem.bind(this))}
                 </ul>
             </div>
