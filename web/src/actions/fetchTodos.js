@@ -1,25 +1,44 @@
+import axios from 'axios';
+
 import {
-  FETCH_TODOS_REQUEST,
-  FETCH_TODOS_SUCCESS,
-  FETCH_TODOS_FAILURE
-} from './types'
+    FETCH_TODOS_REQUEST,
+    FETCH_TODOS_SUCCESS,
+    FETCH_TODOS_FAILURE
+} from './types';
 
-export function fetchTodosRequest() {
-  return {
-    type: FETCH_TODOS_REQUEST
-  }
+import { apiUrl } from './index';
+
+function fetchTodosRequest() {
+    return {
+        type: FETCH_TODOS_REQUEST
+    };
 }
 
-export function fetchTodosSuccess(payload) {
-  return {
-    type: FETCH_TODOS_SUCCESS,
-    payload
-  }
+function fetchTodosSuccess(payload) {
+    return {
+        type: FETCH_TODOS_SUCCESS,
+        payload
+    };
 }
 
-export function fetchTodosFailure(error) {
-  return {
-    type: FETCH_TODOS_FAILURE,
-    error
-  }
+function fetchTodosFailure(error) {
+    return {
+        type: FETCH_TODOS_FAILURE,
+        error
+    };
+}
+
+//Fetch Todos
+export default function fetchTodos() {
+    return dispatch => {
+        //for loading message
+        dispatch(fetchTodosRequest());
+
+        //api request
+        return axios.get(apiUrl).then(response => {
+            dispatch(fetchTodosSuccess(response.data));
+        }).catch((err) => {
+            dispatch(fetchTodosFailure(err.message));
+        });
+    };
 }

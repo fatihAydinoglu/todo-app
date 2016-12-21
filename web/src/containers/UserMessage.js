@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 class UserMessage extends Component {
+
     constructor(props) {
         super(props);
     }
 
     render() {
-
         const { pending, error } = this.props.todos;
 
         return (
@@ -18,6 +17,7 @@ class UserMessage extends Component {
             </div>
         );
     }
+
 }
 
 function mapStateToProps({ todos }) {

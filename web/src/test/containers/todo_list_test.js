@@ -1,13 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { renderComponent } from '../test_helper';
 import chai from 'chai';
-import {mount, shallow} from 'enzyme';
+import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 
-import TodoList from '../../containers/todo_list';
+import TodoList from '../../containers/TodoList';
 
 
 const expect = chai.expect;
@@ -21,7 +19,7 @@ describe('TodoList Container', () => {
     beforeEach(() => {
         store = mockStore({
             todos: {
-                payload: [{ "_id": "1", "title": "read a book", "status": "TODO" }], pending: false, error: ''
+                todoList: [{ '_id': '1', 'title': 'read a book', 'status': 'TODO' }], pending: false, error: ''
             },
         });
     });
@@ -36,7 +34,7 @@ describe('TodoList Container', () => {
 
         expect(wrapper.find('.todolist').html()).to.contain('read a book');
 
-    })
+    });
 
 
 });

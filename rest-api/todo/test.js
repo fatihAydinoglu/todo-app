@@ -1,10 +1,9 @@
-var supertest = require("supertest");
-const express = require('express');
+var supertest = require('supertest');
 var app = require('../app');
 
 describe('Todo Api Requests', () => {
 
-    var testTodoId;
+    let testTodoId;
 
     // Post - /
     describe('Create request', () => {
@@ -21,6 +20,18 @@ describe('Todo Api Requests', () => {
         });
     });
 
+    describe('Create request', () => {
+        it('should not create todo with empty title', (done) => {
+            supertest(app)
+                .post('/api/todo/')
+                .type('json')
+                .send('{ "title": "" }')
+                .expect(400)
+                .end((err) => {
+                    done(err);
+                });
+        });
+    });
 
     // Put - /
     describe('Update request', () => {
@@ -34,14 +45,30 @@ describe('Todo Api Requests', () => {
                 .type('json')
                 .send(`{"status":"DONE"}`)
                 .expect(200)
-                .end((err, res) => {
+                .end((err) => {
                     done(err);
-                })
+                });
 
-        })
+        });
     });
 
+    describe('Update request', () => {
+        it('should not update todo with empty status', (done) => {
+            if (!testTodoId) {
+                throw new Error('There is no todo to update');
+            }
 
+            supertest(app)
+                .put('/api/todo/' + testTodoId)
+                .type('json')
+                .send(`{"status":""}`)
+                .expect(400)
+                .end((err) => {
+                    done(err);
+                });
+
+        });
+    });
 
     // Get - /
     describe('List all request', () => {
@@ -49,10 +76,10 @@ describe('Todo Api Requests', () => {
             supertest(app)
                 .get('/api/todo/')
                 .expect(200)
-                .end((err, res) => {
+                .end((err) => {
                     done(err);
                 });
-        })
+        });
     });
 
     // Get - /id
@@ -64,10 +91,10 @@ describe('Todo Api Requests', () => {
             supertest(app)
                 .get('/api/todo/' + testTodoId)
                 .expect(200)
-                .end((err, res) => {
+                .end((err) => {
                     done(err);
-                })
-        })
+                });
+        });
     });
 
     // Delete - /id
@@ -79,10 +106,9 @@ describe('Todo Api Requests', () => {
             supertest(app)
                 .delete('/api/todo/' + testTodoId)
                 .expect(200)
-                .end((err, res) => {
+                .end((err) => {
                     done(err);
-                })
-
+                });
         });
     });
 

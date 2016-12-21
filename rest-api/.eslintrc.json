@@ -1,0 +1,56 @@
+{
+    "env": {
+        "es6": true,
+        "mocha": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 2016
+    },
+    "plugins": [
+        "node",
+        "mocha"
+    ],
+    "extends": [
+        "eslint:recommended",
+        "plugin:node/recommended",
+        "plugin:mocha/recommended"
+    ],
+    "rules": {
+        "node/exports-style": [
+            "error",
+            "module.exports"
+        ],
+        "node/no-unpublished-require": [
+            "error",
+            {
+                "allowModules": [
+                    "supertest"
+                ]
+            }
+        ],
+        "indent": [
+            "error",
+            4
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "error",
+            "single",
+            {
+                "allowTemplateLiterals": true
+            }
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "max-len": [
+            "warn",
+            80
+        ],
+        "no-multiple-empty-lines": "error"
+    }
+}

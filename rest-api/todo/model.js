@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const todoSchema = new Schema({
     title: String,
-    status: String
+    status: { type: String, default: 'TODO' }
 });
 
 const TodoModel = mongoose.model('TodoModel', todoSchema);

@@ -1,11 +1,11 @@
 const express = require('express');
-const logger = require('../utils/logger');
 const methods = require('./methods');
+const validation = require('./validation');
 
 const todo = new express.Router();
 
 // Create a new todo
-todo.post('/', (req, res) => {
+todo.post('/', validation.save, (req, res) => {
 
     //Get params
     const { title, status } = req.body;
@@ -15,12 +15,10 @@ todo.post('/', (req, res) => {
         if (err) throw err;
         res.json(result);
     });
-})
-
-
+});
 
 // Update todo
-todo.put('/:id', (req, res) => {
+todo.put('/:id', validation.update, (req, res) => {
 
     //Get params
     const { id } = req.params;
@@ -30,9 +28,8 @@ todo.put('/:id', (req, res) => {
     methods.update(id, status, (err, result) => {
         if (err) throw err;
         res.json(result);       
-    })
-
-})
+    });
+});
 
 // Get all todos
 todo.get('/', (req, res) => {
@@ -40,19 +37,18 @@ todo.get('/', (req, res) => {
         if (err) throw err;
         res.json(result);
     });
-})
+});
 
 // Get a todo
 todo.get('/:id', (req, res) => {
 
     const { _id } = req.params;
-
     //Get
     methods.get(_id, (err, result) => {
         if (err) throw err;
         res.json(result);       
     });
-})
+});
 
 // Delete a todo
 todo.delete('/:id', (req, res) => {
@@ -63,7 +59,7 @@ todo.delete('/:id', (req, res) => {
     methods.delete(id, (err, result) => {
         if (err) throw err;
         res.json(result);         
-    })
-})
+    });
+});
 
 module.exports = todo;

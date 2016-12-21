@@ -7,18 +7,31 @@
     "start": "nodemon",
     "test": "mocha --recursive ./**/*test.js"
   },
+  "engines": {
+    "node": ">=6.0.0"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
-    "winston": "^2.3.0"
+    "winston": "^2.3.0",
+    "mongoose": "^4.6.6",
+    "helmet": "^3.1.0",
+    "cors": "^2.8.1",
+    "express-validator": "^3.1.1",
+    "compression": "^1.6.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^3.1.2",
-    "mongoose": "^4.6.6",
     "nodemon": "^1.11.0",
-    "supertest": "^2.0.1"
+    "supertest": "^2.0.1",
+    "eslint": "^3.11.1",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-mocha": "^4.7.0",
+    "eslint-plugin-node": "^3.0.5",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^2.0.1"
   }
 }

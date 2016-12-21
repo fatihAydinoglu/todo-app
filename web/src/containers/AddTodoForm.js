@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { addTodo } from '../actions/index';
+import { addTodo, userMessage } from '../actions/index';
 
 class AddTodoForm extends Component {
 
@@ -11,29 +10,35 @@ class AddTodoForm extends Component {
         this.onInputChange = this.onInputChange.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
 
-        this.state = { addTodoText: '', validated: true };
+        this.state = { addTodoText: '' };
     }
 
     onInputChange(event) {
-        this.setState({ addTodoText: event.target.value, validated: true });
+        this.setState({ addTodoText: event.target.value });
     }
 
     onFormSubmit(event) {
         event.preventDefault();
 
-        if (!this.state.addTodoText) {
-            this.setState({ validated: false });
-            return;
-        }
+        const { addTodoText } = this.state;
 
-        this.props.addTodo(this.state.addTodoText);
-        this.setState({ addTodoText: '', validated: true });
+        if(/\S/.test(addTodoText)) {
+            this.props.addTodo(addTodoText)
+                .then(() => {
+                    this.setState({ addTodoText: '' });
+                })
+                .catch(() => {
+                    this.props.userMessage('There is an error.', 'error');
+                });
+        } else {
+            this.props.userMessage('Todo can\'t be blank.', 'error');
+        }
     }
 
     render() {
         return (
             <form className="form-horizontal" onSubmit={this.onFormSubmit}>
-                <div className={`form-group ${this.state.validated ? "" : "has-error"}`}>
+                <div className='form-group'>
                     <input
                         className="form-control"
                         placeholder="Write your to do here and press Enter."
@@ -46,8 +51,4 @@ class AddTodoForm extends Component {
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ addTodo }, dispatch);
-}
-
-export default connect(null, mapDispatchToProps)(AddTodoForm);
+export default connect(null, { addTodo, userMessage })(AddTodoForm);
